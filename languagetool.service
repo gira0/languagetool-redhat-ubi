@@ -1,0 +1,9 @@
+[Unit] 
+Description=Language Tool Server Service 
+[Service] 
+Restart=always 
+ExecStart=java -cp /opt/languagetool/languagetool-standalone/target/LanguageTool-/LanguageTool-/languagetool-server.jar org.languagetool.server.HTTPServer --languageModel /languagetool/ngram --port 8080 --allow-origin "*" 
+Type=simple 
+User=languagetool 
+[Install] 
+WantedBy=default.target
