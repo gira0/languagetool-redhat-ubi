@@ -1,7 +1,7 @@
 FROM registry.access.redhat.com/ubi8/ubi-minimal
 ENV LT_VER=5.5
 
-RUN microdnf -q -y install git maven unzip nginx java-1.8.0-openjdk-headless; microdnf clean all; 
+RUN microdnf -y install git maven unzip nginx java-1.8.0-openjdk-headless; microdnf clean all; 
 RUN git clone --depth 1 https://github.com/languagetool-org/languagetool.git -b v${LT_VER} /opt/languagetool/
 WORKDIR /opt/languagetool/
 #RUN ./build.sh languagetool-standalone package -DskipTests
