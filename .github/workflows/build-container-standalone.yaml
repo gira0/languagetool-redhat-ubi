@@ -1,0 +1,36 @@
+name: Build Image using Containerfile
+on: [push]
+
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Buildah Action
+      uses: redhat-actions/buildah-build@v2
+      with:
+        image: languagetool
+        tags: v1 ${{ github.sha }}
+        containerfiles: |
+          ./standalone-languagetool/Containerfile
+        build-args: |
+          some_arg=some_value
+
+    - name: Push To hub.docker.com
+      id: push-to-docker
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.build-image.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tags }}
+        registry: docker.io/giratot/languagetool
+        username: ${{ secrets.REGISTRY_USER }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+
+    - name: Print image url
+      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+
