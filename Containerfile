@@ -13,9 +13,8 @@ FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift as stage2
 ARG LT_VER
 
 COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool-${LT_VER}/LanguageTool-${LT_VER}/ /opt/languagetool/
+ADD --chmod=755 startup.sh /opt/languagetool/startup.sh
 
-#RUN useradd languagetool
-#USER languagetool
 EXPOSE 8080/tcp
-CMD /usr/bin/java -cp /opt/languagetool/languagetool-server.jar org.languagetool.server.HTTPServer --languageModel /languagetool --port 8080 --allow-origin '*'
+CMD ['/opt/languagetool/startup.sh']
 

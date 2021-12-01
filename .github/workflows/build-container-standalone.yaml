@@ -15,7 +15,7 @@ jobs:
       uses: redhat-actions/buildah-build@v2
       with:
         image: languagetool
-        tags: v1 ${{ github.sha }}
+        tags: latest v5.5 ${{ github.sha }}
         containerfiles: |
           ./Containerfile
         build-args: |
