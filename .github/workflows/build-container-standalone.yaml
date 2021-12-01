@@ -17,7 +17,7 @@ jobs:
         image: languagetool
         tags: v1 ${{ github.sha }}
         containerfiles: |
-          ./standalone-languagetool/Containerfile
+          ./Containerfile
         build-args: |
           some_arg=some_value
 
