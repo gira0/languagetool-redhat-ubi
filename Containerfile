@@ -16,5 +16,5 @@ COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool
 ADD --chmod=755 startup.sh /opt/languagetool/startup.sh
 
 EXPOSE 8080/tcp
-CMD ['/opt/languagetool/startup.sh']
+CMD /opt/languagetool/startup.sh
 
