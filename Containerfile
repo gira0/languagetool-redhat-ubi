@@ -16,5 +16,6 @@ COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool
 ADD --chmod=755 startup.sh /opt/languagetool/startup.sh
 
 EXPOSE 8080/tcp
+HEALTHCHECK --interval=5m --timeout=5s CMD curl -f http://localhost:8080/v2/languages || exit 1
 CMD /opt/languagetool/startup.sh
 
