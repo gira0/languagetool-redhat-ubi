@@ -9,7 +9,7 @@ WORKDIR /opt/languagetool/
 # Don't use the shell script, just run the maven command with quiet to silence the wall of text
 RUN mvn -q --projects languagetool-standalone --also-make package -DskipTests
 
-FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift as stage2
+FROM registry.hub.docker.com/library/openjdk:slim as stage2
 ARG LT_VER
 
 COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool-${LT_VER}/LanguageTool-${LT_VER}/ /opt/languagetool/
