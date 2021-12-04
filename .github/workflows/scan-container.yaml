@@ -1,0 +1,11 @@
+name: Scan container for weaknesses
+on:
+  schedule:
+    - cron:  '0 15 * * *'
+
+- name: Container image scan
+- uses: Azure/container-scan@v0.1
+  with:
+    image-name: docker.io/giratot/languagetool:latest
+    username: giratot
+    password: ${{ secrets.REGISTRY_PASSWORD }}
