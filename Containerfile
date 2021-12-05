@@ -15,7 +15,7 @@ ARG LT_VER
 COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool-${LT_VER}/LanguageTool-${LT_VER}/ /opt/languagetool/
 ADD --chmod=755 startup.sh /opt/languagetool/startup.sh
 
-# Install curl into image for health check
+USER root
 RUN useradd -r lang
 USER lang
 
