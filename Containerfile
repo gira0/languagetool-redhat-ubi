@@ -16,7 +16,6 @@ COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool
 ADD --chmod=755 startup.sh /opt/languagetool/startup.sh
 
 # Install curl into image for health check
-RUN apt-get update; apt-get install curl -y; apt-get clean
 RUN useradd -r lang
 USER lang
 
