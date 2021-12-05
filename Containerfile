@@ -13,7 +13,7 @@ FROM registry.access.redhat.com/ubi8/openjdk-8 as stage2
 ARG LT_VER
 
 COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool-${LT_VER}/LanguageTool-${LT_VER}/ /opt/languagetool/
-ADD --chmod=755 startup.sh /opt/languagetool/startup.sh
+COPY --chmod=755 startup.sh /opt/languagetool/startup.sh
 
 USER root
 RUN useradd -r lang
