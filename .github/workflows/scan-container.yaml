@@ -1,7 +1,7 @@
 name: Scan container for weaknesses
 on:
   schedule:
-    - cron:  '0 15 * * *'
+    - cron:  '0 15 * * 3'
   workflow_dispatch:
 
 jobs:
