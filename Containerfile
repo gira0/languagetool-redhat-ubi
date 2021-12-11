@@ -16,7 +16,7 @@ COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool
 COPY --chmod=755 startup.sh /opt/languagetool/startup.sh
 
 USER root
-RUN useradd -r lang
+RUN adduser -S lang
 USER lang
 
 EXPOSE 8080/tcp
