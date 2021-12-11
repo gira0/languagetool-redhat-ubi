@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 DIR="/languagetool"
 if [ -d "$DIR" ]; then
