@@ -17,6 +17,8 @@ jobs:
     - name: Buildah Action
       id: build-image
       uses: redhat-actions/buildah-build@v2
+      env: 
+        DOCKER_CONTENT_TRUST: 1
       with:
         image: languagetool
         tags: latest v5.5 ${{ github.sha }}
