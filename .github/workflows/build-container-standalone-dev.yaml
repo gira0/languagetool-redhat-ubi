@@ -2,7 +2,7 @@ name: Build Image using Containerfile - Test
 on:
   push:
     paths:
-      - 'Containerfile-test'
+      - 'Containerfile-dev'
       - 'startup.sh'
   workflow_dispatch:
 
@@ -21,9 +21,9 @@ jobs:
         DOCKER_CONTENT_TRUST: 1
       with:
         image: languagetool
-        tags: test lt-v5.5 ${{ github.sha }}
+        tags: dev lt-v5.5 ${{ github.sha }}
         containerfiles: |
-          ./Containerfile
+          ./Containerfile-dev
         build-args: |
           some_arg=some_value
 
