@@ -1,4 +1,4 @@
-name: Build Image using Containerfile - Dev
+name: DEV - Build Image using Containerfile
 on:
   push:
     paths:

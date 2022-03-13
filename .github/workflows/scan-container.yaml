@@ -1,4 +1,4 @@
-name: Scan container for weaknesses
+name: PROD - Scan container for weaknesses
 on:
   schedule:
     - cron:  '0 15 * * 3'

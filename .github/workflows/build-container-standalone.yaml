@@ -1,4 +1,4 @@
-name: Build Image using Containerfile
+name: PROD - Build Image using Containerfile
 on:
   push:
     paths:
