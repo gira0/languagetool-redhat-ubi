@@ -12,7 +12,7 @@ RUN mvn -q --projects languagetool-standalone --also-make package -DskipTests
 FROM registry.hub.docker.com/library/alpine:latest as stage2
 ARG LT_VER
 
-RUN apk add --no-cache openjdk17
+RUN apk add --no-cache openjdk17-jre
 
 COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool-${LT_VER}/LanguageTool-${LT_VER}/ /opt/languagetool/
 COPY --chmod=755 startup.sh /opt/languagetool/startup.sh
