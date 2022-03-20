@@ -1,4 +1,4 @@
-name: DEV - Build Image using Containerfile
+name: DEV - Output LT Version
 on:
   workflow_dispatch:
 
@@ -17,7 +17,7 @@ jobs:
 
           if [[ $data =~ $regex ]]
           then
-              ::set-output name=LT_VERSION::${BASH_REMATCH[1]}
+              echo "::set-output name=LT_VERSION::${BASH_REMATCH[1]}"
           fi
       shell: bash
       id: get-version
