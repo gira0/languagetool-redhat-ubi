@@ -23,5 +23,5 @@ jobs:
       id: get-version
 
     - name: Print image url
-      run: echo "The selected color is ${{ steps.get-version.outputs.LT_VERSION }}"
+      run: echo "LT Version is ${{ steps.get-version.outputs.LT_VERSION }}"
 
