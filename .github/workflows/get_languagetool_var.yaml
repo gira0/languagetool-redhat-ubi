@@ -1,0 +1,27 @@
+name: DEV - Build Image using Containerfile
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Get Version
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Run script file
+      run: |
+          data=$(curl -s https://api.github.com/repos/languagetool-org/languagetool/tags)
+          regex='\"name\": \"([0-9v.]{1,6})\"'
+
+          if [[ $data =~ $regex ]]
+          then
+              ::set-output name=LT_VERSION::${BASH_REMATCH[1]}
+          fi
+      shell: bash
+      id: get-version
+
+    - name: Print image url
+      run: echo "The selected color is ${{ steps.get-version.outputs.LT_VERSION }}"
+
