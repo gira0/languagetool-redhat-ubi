@@ -9,8 +9,10 @@ WORKDIR /opt/languagetool/
 # Don't use the shell script, just run the maven command with quiet to silence the wall of text
 RUN mvn -q --projects languagetool-standalone --also-make package -DskipTests
 
-FROM registry.hub.docker.com/library/openjdk:18-jdk-alpine as stage2
+FROM registry.hub.docker.com/library/alpine:latest as stage2
 ARG LT_VER
+
+CMD apk add --no-cache openjdk17-jre-headless
 
 COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool-${LT_VER}/LanguageTool-${LT_VER}/ /opt/languagetool/
 COPY --chmod=755 startup.sh /opt/languagetool/startup.sh
