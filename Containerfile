@@ -1,4 +1,4 @@
-ARG LT_VER=5.5
+ARG LT_VER=5.7
 FROM registry.access.redhat.com/ubi8/ubi-minimal as stage1
 ARG LT_VER
 
