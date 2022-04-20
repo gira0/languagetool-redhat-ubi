@@ -1,5 +1,5 @@
 ARG LT_VER=5.7
-FROM registry.access.redhat.com/ubi8/ubi-minimal as stage1
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.5 as stage1
 ARG LT_VER
 
 RUN microdnf -y install git maven unzip nginx java-1.8.0-openjdk-headless; microdnf clean all; 
@@ -9,7 +9,7 @@ WORKDIR /opt/languagetool/
 # Don't use the shell script, just run the maven command with quiet to silence the wall of text
 RUN mvn -q --projects languagetool-standalone --also-make package -DskipTests
 
-FROM registry.hub.docker.com/library/alpine:latest as stage2
+FROM registry.hub.docker.com/library/alpine:3.15.4 as stage2
 ARG LT_VER
 
 CMD apk add --no-cache openjdk17-jre-headless
