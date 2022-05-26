@@ -25,7 +25,7 @@ jobs:
         containerfiles: |
           ./Containerfile
         build-args: |
-          some_arg=some_value
+          DOCKER_CONTENT_TRUST=1
 
     - name: Push To hub.docker.com
       id: push-to-docker
