@@ -1,5 +1,5 @@
 ARG LT_VER=5.5
-FROM registry.access.redhat.com/ubi9/ubi-minimal as stage1
+FROM registry.access.redhat.com/ubi8/ubi-minimal as stage1
 ARG LT_VER
 
 RUN microdnf -y install git maven unzip nginx java-1.8.0-openjdk-headless; microdnf clean all; 
