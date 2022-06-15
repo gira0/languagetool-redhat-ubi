@@ -1,4 +1,4 @@
-name: DEV - Scan container for weaknesses
+name: LIVE MASTER - Scan container for weaknesses
 on:
   workflow_dispatch:
 

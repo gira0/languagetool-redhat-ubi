@@ -42,7 +42,7 @@ jobs:
         DOCKER_CONTENT_TRUST: 1
       with:
         image: languagetool
-        tags: dev lt-${{ steps.get-version.outputs.LT_VERSION }}
+        tags: dev dev-${{ steps.get-version.outputs.LT_VERSION }}
         containerfiles: |
           ./Containerfile-dev
         build-args: |
