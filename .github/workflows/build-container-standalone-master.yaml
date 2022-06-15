@@ -1,0 +1,43 @@
+name: LIVE-MASTER - Build Image using Containerfile
+on:
+  push:
+    paths:
+      - 'Containerfile-master'
+      - 'startup.sh'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Buildah Action
+      id: build-image
+      uses: redhat-actions/buildah-build@v2
+      env: 
+        DOCKER_CONTENT_TRUST: 1
+      with:
+        image: languagetool
+        tags: live
+        containerfiles: |
+          ./Containerfile-master
+        build-args: |
+          DOCKER_CONTENT_TRUST=1
+
+    - name: Push To hub.docker.com
+      id: push-to-docker
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.build-image.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tags }}
+        registry: docker.io/giratot
+        username: giratot
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+
+    - name: Print image url
+      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+

@@ -1,0 +1,15 @@
+name: DEV - Scan container for weaknesses
+on:
+  workflow_dispatch:
+
+jobs:
+  scan-container:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Container image scan
+      uses: Azure/container-scan@v0.1
+      with:
+        image-name: docker.io/giratot/languagetool:live
+        username: giratot
+        password: ${{ secrets.REGISTRY_PASSWORD }}
