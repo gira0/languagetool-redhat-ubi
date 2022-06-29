@@ -13,5 +13,5 @@ jobs:
       uses: Azure/container-scan@v0.1
       with:
         image-name: docker.io/giratot/languagetool:latest
-        username: giratot
+        username: ${{ secrets.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_PASSWORD }}

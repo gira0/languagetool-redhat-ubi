@@ -20,7 +20,7 @@ jobs:
           format: 'sarif'
           output: 'trivy-results.sarif'
         env:
-          TRIVY_USERNAME: giratot
+          TRIVY_USERNAME: ${{ secrets.REGISTRY_USER }}
           TRIVY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Upload Trivy scan results to GitHub Security tab
