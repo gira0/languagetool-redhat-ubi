@@ -8,11 +8,11 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Trivy Container Scan & GitHub Security
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
