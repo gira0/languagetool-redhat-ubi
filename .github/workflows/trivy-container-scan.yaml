@@ -5,6 +5,8 @@ on:
       - main
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron:  '0 12 * * 3'
 
 jobs:
   build:
