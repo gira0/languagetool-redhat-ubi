@@ -1,9 +1,9 @@
 name: DEV - Build Image using Containerfile
 on:
+on:
   push:
-    paths:
-      - 'Containerfile-dev'
-      - 'startup.sh'
+    branches:
+      - 'dev'
   workflow_dispatch:
 
 jobs:
