@@ -41,7 +41,20 @@ jobs:
         username: ${{ secrets.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'docker.io/giratot/languagetool:dev'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+      env:
+        TRIVY_USERNAME: ${{ secrets.REGISTRY_USER }}
+        TRIVY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
 
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-results.sarif'
