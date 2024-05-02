@@ -1,22 +1,20 @@
-ARG LT_VER
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.6 as stage1
+ARG LT_VER=6.4
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4 as stage1
 ARG LT_VER
 
 RUN microdnf -y install git maven unzip java-1.8.0-openjdk-headless; microdnf clean all; 
 RUN git clone --depth 1 https://github.com/languagetool-org/languagetool.git -b v${LT_VER} /opt/languagetool/
 WORKDIR /opt/languagetool/
 
-RUN mvn clean
 # Don't use the shell script, just run the maven command with quiet to silence the wall of text
 RUN mvn -q --projects languagetool-standalone --also-make package -DskipTests
-# Copy the server jar to a generic location
-RUN cp $(find /opt/languagetool/ -iname "languagetool-server.jar") /languagetool-server.jar
 
 FROM registry.hub.docker.com/library/alpine:3 as stage2
+ARG LT_VER
 
-RUN apk add --no-cache openjdk8-jre
+RUN apk add --no-cache openjdk8-jre-headless
 
-COPY --from=stage1 /languagetool-server.jar /opt/languagetool/languagetool-server.jar
+COPY --from=stage1 /opt/languagetool/languagetool-standalone/target/LanguageTool-${LT_VER}/LanguageTool-${LT_VER}/ /opt/languagetool/
 COPY --chmod=755 startup.sh /opt/languagetool/startup.sh
 
 USER root
