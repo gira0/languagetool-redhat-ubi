@@ -1,12 +1,12 @@
-name: PROD - Build Image using Containerfile
+name: LIVE - Build Image using Containerfile
 on:
-  push:
-    paths:
-      - 'Containerfile'
-      - 'startup.sh'
-  workflow_dispatch:
   schedule:
-    - cron:  '0 10 * * *'
+    - cron:  '0 0 * * *'
+  push:
+    branches:
+      - 'dev/*'
+  workflow_dispatch:
+
 jobs:
   build:
     name: Build image
@@ -35,6 +35,7 @@ jobs:
     - name: Print LT Version
       run: echo "LT Version is ${{ steps.get-version.outputs.LT_VERSION }}"
 
+
     - name: Buildah Action
       id: build-image
       uses: redhat-actions/buildah-build@v2
@@ -42,9 +43,9 @@ jobs:
         DOCKER_CONTENT_TRUST: 1
       with:
         image: languagetool
-        tags: ${{ steps.get-version.outputs.LT_VERSION }}
+        tags: dev dev-${{ steps.get-version.outputs.LT_VERSION }}
         containerfiles: |
-          ./Containerfile
+          ./Containerfile-dev
         build-args: |
           LT_VER=${{ steps.get-version.outputs.LT_VERSION }}
           DOCKER_CONTENT_TRUST=1
@@ -58,6 +59,7 @@ jobs:
         registry: docker.io/giratot
         username: ${{ secrets.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
+
 
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"

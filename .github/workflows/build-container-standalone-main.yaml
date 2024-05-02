@@ -1,11 +1,8 @@
 name: LIVE-MASTER - Build Image using Containerfile
 on:
-  schedule:
-    - cron:  '0 0 * * *'
   push:
-    paths:
-      - 'Containerfile-master'
-      - 'startup.sh'
+    branches:
+      - 'main'
   workflow_dispatch:
 
 jobs:
