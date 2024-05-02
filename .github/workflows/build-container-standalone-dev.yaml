@@ -1,9 +1,8 @@
 name: DEV - Build Image using Containerfile
 on:
   push:
-    paths:
-      - 'Containerfile-dev'
-      - 'startup.sh'
+    branches:
+      - 'dev'
   workflow_dispatch:
 
 jobs:
@@ -12,28 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Check File Limits
       run: |
         ulimit -n 
         ulimit -n 65536
-
-    - name: Get LanguageTool Version
-      run: |
-          data=$(curl -s https://api.github.com/repos/languagetool-org/languagetool/tags)
-          regex='\"name\": \"([0-9v.]{1,6})\"'
-
-          if [[ $data =~ $regex ]]
-          then
-              echo "::set-output name=LT_VERSION::${BASH_REMATCH[1]:1}"
-          fi
-      shell: bash
-      id: get-version
-
-    - name: Print LT Version
-      run: echo "LT Version is ${{ steps.get-version.outputs.LT_VERSION }}"
-
 
     - name: Buildah Action
       id: build-image
@@ -42,11 +25,10 @@ jobs:
         DOCKER_CONTENT_TRUST: 1
       with:
         image: languagetool
-        tags: dev dev-${{ steps.get-version.outputs.LT_VERSION }}
+        tags: dev
         containerfiles: |
-          ./Containerfile-dev
+          ./Containerfile
         build-args: |
-          LT_VER=${{ steps.get-version.outputs.LT_VERSION }}
           DOCKER_CONTENT_TRUST=1
 
     - name: Push To hub.docker.com
@@ -59,7 +41,20 @@ jobs:
         username: ${{ secrets.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'docker.io/giratot/languagetool:dev'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+      env:
+        TRIVY_USERNAME: ${{ secrets.REGISTRY_USER }}
+        TRIVY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
 
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-results.sarif'
