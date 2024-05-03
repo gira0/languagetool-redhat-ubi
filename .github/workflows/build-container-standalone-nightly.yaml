@@ -41,10 +41,10 @@ jobs:
       uses: redhat-actions/buildah-build@v2
       with:
         image: languagetool
-        tags: dev dev-${{ steps.get-version.outputs.LT_VERSION }}
+        tags: nightly nightly-${{ steps.get-version.outputs.LT_VERSION }}
         extra-args: --ulimit nofile=65536:65536
         containerfiles: |
-          ./Containerfile-dev
+          ./Containerfile
         build-args: |
           LT_VER=${{ steps.get-version.outputs.LT_VERSION }}
 
