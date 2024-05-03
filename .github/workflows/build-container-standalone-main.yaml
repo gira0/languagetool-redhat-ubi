@@ -23,6 +23,10 @@ jobs:
         containerfiles: |
           ./Containerfile
 
+    - name: Run Healthcheck
+      run: bash -x ./healthcheck.sh ${{ steps.build-image.outputs.image }}
+      shell: bash
+
     - name: Push To hub.docker.com
       id: push-to-docker
       uses: redhat-actions/push-to-registry@v2
