@@ -43,7 +43,6 @@ jobs:
     - name: Get LanguageTool Version
       run: ./healthcheck.sh
       shell: bash
-      id: get-version
 
     - name: Push To hub.docker.com
       id: push-to-docker
