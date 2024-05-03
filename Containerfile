@@ -2,7 +2,7 @@ ARG LT_VER=6.4
 FROM registry.access.redhat.com/ubi8/ubi:8.9 as stage1
 ARG LT_VER
 
-RUN microdnf -y install git maven unzip java-1.8.0-openjdk-headless; microdnf clean all; 
+RUN dnf -y install git maven unzip java-1.8.0-openjdk-headless; dnf clean all; 
 RUN git clone --depth 1 https://github.com/languagetool-org/languagetool.git -b v${LT_VER} /opt/languagetool/
 WORKDIR /opt/languagetool/
 
