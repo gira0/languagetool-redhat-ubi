@@ -2,7 +2,7 @@
 #--interval=2m --start-period=5m --timeout=5s CMD curl -f http://localhost:8080/v2/languages || exit 1
 
 # Run the podman container
-container_id=$(podman run -d --rm -p 8080:8080 nightly)
+container_id=$(podman run -d --rm -p 8080:8080 $1)
 
 # Wait for the container to start
 sleep 5

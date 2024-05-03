@@ -40,8 +40,8 @@ jobs:
         build-args: |
           LT_VER=${{ steps.get-version.outputs.LT_VERSION }}
 
-    - name: Get LanguageTool Version
-      run: bash -x ./healthcheck.sh
+    - name: Run Healthcheck
+      run: bash -x ./healthcheck.sh ${{ steps.build-image.outputs.image }}
       shell: bash
 
     - name: Push To hub.docker.com
