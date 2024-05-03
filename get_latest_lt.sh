@@ -7,4 +7,3 @@ if [[ $data =~ $regex ]]
 then
   echo "::set-output name=LT_VERSION::${BASH_REMATCH[1]:1}"
 fi
-
