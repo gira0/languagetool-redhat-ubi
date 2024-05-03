@@ -22,7 +22,7 @@ cat response_body.json
 
 COUNT=$(jq '. | length' response_body.json)
 
-if [ "$COUNT" -gt 50 ]; then
+if [ "$COUNT" -lt 50 ]; then
   echo "Failed to get a response body"
   exit 1
 fi
