@@ -21,7 +21,7 @@ jobs:
         ulimit -n 65536
 
     - name: Get LanguageTool Version
-      run: ./get_latest_lt.sh
+      run: bash -x ./get_latest_lt.sh
       shell: bash
       id: get-version
 
@@ -41,7 +41,7 @@ jobs:
           LT_VER=${{ steps.get-version.outputs.LT_VERSION }}
 
     - name: Get LanguageTool Version
-      run: ./healthcheck.sh
+      run: bash -x ./healthcheck.sh
       shell: bash
 
     - name: Push To hub.docker.com
