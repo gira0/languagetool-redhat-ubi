@@ -1,4 +1,4 @@
-name: LIVE-MASTER - Build Image using Containerfile
+name: MAIN - Build Image using Containerfile
 on:
   push:
     branches:
@@ -16,15 +16,16 @@ jobs:
     - name: Buildah Action
       id: build-image
       uses: redhat-actions/buildah-build@v2
-      env: 
-        DOCKER_CONTENT_TRUST: 1
+
       with:
         image: languagetool
         tags: live
         containerfiles: |
-          ./Containerfile-master
-        build-args: |
-          DOCKER_CONTENT_TRUST=1
+          ./Containerfile
+
+    - name: Run Healthcheck
+      run: bash -x ./healthcheck.sh ${{ steps.build-image.outputs.image }}
+      shell: bash
 
     - name: Push To hub.docker.com
       id: push-to-docker

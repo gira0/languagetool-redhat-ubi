@@ -21,15 +21,15 @@ jobs:
     - name: Buildah Action
       id: build-image
       uses: redhat-actions/buildah-build@v2
-      env: 
-        DOCKER_CONTENT_TRUST: 1
       with:
         image: languagetool
         tags: dev
         containerfiles: |
           ./Containerfile
-        build-args: |
-          DOCKER_CONTENT_TRUST=1
+
+    - name: Run Healthcheck
+      run: bash -x ./healthcheck.sh ${{ steps.build-image.outputs.image }}
+      shell: bash
 
     - name: Push To hub.docker.com
       id: push-to-docker
@@ -45,7 +45,7 @@ jobs:
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
     
     - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
+      uses: aquasecurity/trivy-action@0.19.0
       with:
         image-ref: 'docker.io/giratot/languagetool:dev'
         format: 'sarif'
