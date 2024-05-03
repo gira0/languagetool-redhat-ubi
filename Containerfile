@@ -21,5 +21,4 @@ RUN adduser -S lang
 USER lang
 
 EXPOSE 8080/tcp
-HEALTHCHECK --interval=2m --start-period=5m --timeout=5s CMD curl -f http://localhost:8080/v2/languages || exit 1
 CMD /opt/languagetool/startup.sh
