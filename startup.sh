@@ -10,5 +10,3 @@ else
   java -cp /opt/languagetool/languagetool-server.jar org.languagetool.server.HTTPServer --port 8080 --allow-origin '*' --public
 
 fi
-
-

@@ -20,10 +20,11 @@ fi
 echo "Response body:"
 cat response_body.json
 
+echo "Language count:"
 COUNT=$(jq '. | length' response_body.json)
 
 if [ "$COUNT" -lt 50 ]; then
-  echo "Failed to get a response body"
+  echo "Language Count too low to be valid"
   exit 1
 fi
 

@@ -17,7 +17,7 @@ jobs:
 
     - name: Check File Limits
       run: |
-        ulimit -n 
+        ulimit -n
         ulimit -n 65536
 
     - name: Get LanguageTool Version
