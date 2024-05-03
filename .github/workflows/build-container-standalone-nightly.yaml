@@ -39,16 +39,14 @@ jobs:
     - name: Buildah Action
       id: build-image
       uses: redhat-actions/buildah-build@v2
-      env: 
-        DOCKER_CONTENT_TRUST: 1
       with:
         image: languagetool
         tags: dev dev-${{ steps.get-version.outputs.LT_VERSION }}
+        extra-args: --ulimit nofile=65536:65536
         containerfiles: |
           ./Containerfile-dev
         build-args: |
           LT_VER=${{ steps.get-version.outputs.LT_VERSION }}
-          DOCKER_CONTENT_TRUST=1
 
     - name: Push To hub.docker.com
       id: push-to-docker
