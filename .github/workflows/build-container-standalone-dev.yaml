@@ -5,6 +5,16 @@ on:
       - 'dev'
   workflow_dispatch:
 
+env:
+  REGISTRY: ghcr.io
+  CONTAINER_REPO: ${{ github.repository }}
+
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+  attestations: write
+
 jobs:
   build:
     name: Build image
@@ -32,6 +42,7 @@ jobs:
       with:
         image: languagetool
         tags: dev dev-${{ steps.get-version.outputs.LT_VERSION }}
+        oci: true
         containerfiles: |
           ./Containerfile
 
@@ -39,15 +50,24 @@ jobs:
       run: bash -x ./healthcheck.sh ${{ steps.build-image.outputs.image }}
       shell: bash
 
-    - name: Push To hub.docker.com
-      id: push-to-docker
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push To GitHub Container Registry
+      id: push-to-repo
       uses: redhat-actions/push-to-registry@v2
       with:
         image: ${{ steps.build-image.outputs.image }}
         tags: ${{ steps.build-image.outputs.tags }}
-        registry: docker.io/giratot
-        username: ${{ secrets.REGISTRY_USER }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+        registry: ${{ env.REGISTRY }}/${{ env.CONTAINER_REPO }}
 
-    - name: Print image url
-      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+    - name: Generate artifact attestation and push
+      uses: actions/attest-build-provenance@v1
+      with:
+        subject-name: ${{ env.REGISTRY }}/${{ env.CONTAINER_REPO }}/${{ steps.build-image.outputs.image }}
+        subject-digest: ${{ steps.push-to-repo.outputs.digest }}
+        push-to-registry: true
