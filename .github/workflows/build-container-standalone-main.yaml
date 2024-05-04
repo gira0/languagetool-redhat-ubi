@@ -23,7 +23,7 @@ jobs:
       uses: redhat-actions/buildah-build@v2
       with:
         image: languagetool
-        tags: main ${{ steps.get-version.outputs.LT_VERSION }}
+        tags: main v${{ steps.get-version.outputs.LT_VERSION }}
         containerfiles: |
           ./Containerfile
 
@@ -40,6 +40,13 @@ jobs:
         registry: docker.io/giratot
         username: ${{ secrets.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - name: Generate artifact attestation
+      uses: actions/attest-build-provenance@v1
+      with:
+        subject-name: ${{ steps.build-image.outputs.image }}
+        subject-digest: ${{ steps.push-to-docker.outputs.digest }}
+        push-to-registry: true
 
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
