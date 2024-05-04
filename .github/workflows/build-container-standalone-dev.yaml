@@ -41,6 +41,7 @@ jobs:
       with:
         image: languagetool
         tags: dev dev-${{ steps.get-version.outputs.LT_VERSION }}
+        oci: true
         containerfiles: |
           ./Containerfile
 
@@ -63,6 +64,7 @@ jobs:
       with:
         subject-name: ${{ env.CONTAINER_REPO }}/${{ steps.build-image.outputs.image }}
         subject-digest: ${{ steps.push-to-repo.outputs.digest }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         push-to-registry: true
 
     - name: Print image url
