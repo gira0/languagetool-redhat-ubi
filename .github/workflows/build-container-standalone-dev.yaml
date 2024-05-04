@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 env:
-  CONTAINER_REPO: ghcr.io/${{ github.repository }}
+  REGISTRY: ghcr.io
+  CONTAINER_REPO: ${{ env.REGISTRY }}/${{ github.repository }}
 
 permissions:
   id-token: write
@@ -49,22 +50,26 @@ jobs:
       run: bash -x ./healthcheck.sh ${{ steps.build-image.outputs.image }}
       shell: bash
 
-    - name: Push To Repo
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push To GitHub Container Registry
       id: push-to-repo
       uses: redhat-actions/push-to-registry@v2
       with:
         image: ${{ steps.build-image.outputs.image }}
         tags: ${{ steps.build-image.outputs.tags }}
         registry: ${{ env.CONTAINER_REPO }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Generate artifact attestation
+    - name: Generate artifact attestation and push
       uses: actions/attest-build-provenance@v1
       with:
         subject-name: ${{ env.CONTAINER_REPO }}/${{ steps.build-image.outputs.image }}
         subject-digest: ${{ steps.push-to-repo.outputs.digest }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
         push-to-registry: true
 
     - name: Print image url
