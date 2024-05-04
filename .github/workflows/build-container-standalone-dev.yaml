@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_REPO: docker.io/giratot
+  DOCKER_REPO: index.docker.io/giratot
 
 permissions:
   id-token: write
