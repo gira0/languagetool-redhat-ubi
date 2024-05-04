@@ -15,6 +15,7 @@ permissions:
   packages: write
   attestations: write
   actions: read
+  security-events: write
 
 jobs:
   build:
@@ -70,6 +71,8 @@ jobs:
         image-ref: '${{ env.REGISTRY }}/${{ env.CONTAINER_REPO }}/${{ steps.build-image.outputs.image }}:dev'
         format: 'sarif'
         output: 'trivy-results.sarif'
+        severity: 'CRITICAL,HIGH'
+        ignore-unfixed: true
       env:
         TRIVY_USERNAME: ${{ secrets.REGISTRY_USER }}
         TRIVY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
