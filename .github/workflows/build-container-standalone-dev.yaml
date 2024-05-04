@@ -53,14 +53,14 @@ jobs:
       with:
         image: ${{ steps.build-image.outputs.image }}
         tags: ${{ steps.build-image.outputs.tags }}
-        registry: $DOCKER_REPO
+        registry: ${{ env.DOCKER_REPO }}
         username: ${{ secrets.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - name: Generate artifact attestation
       uses: actions/attest-build-provenance@v1
       with:
-        subject-name: $DOCKER_REPO/${{ steps.build-image.outputs.image }}
+        subject-name: ${{ env.DOCKER_REPO }}/${{ steps.build-image.outputs.image }}
         subject-digest: ${{ steps.push-to-docker.outputs.digest }}
         push-to-registry: true
 
