@@ -71,6 +71,3 @@ jobs:
         subject-name: ${{ env.CONTAINER_REPO }}/${{ steps.build-image.outputs.image }}
         subject-digest: ${{ steps.push-to-repo.outputs.digest }}
         push-to-registry: true
-
-    - name: Print image url
-      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
