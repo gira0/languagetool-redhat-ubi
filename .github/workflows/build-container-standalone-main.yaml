@@ -5,6 +5,9 @@ on:
       - 'main'
   workflow_dispatch:
 
+env:
+  DOCKER_REPO: docker.io/giratot
+
 permissions:
   id-token: write
   contents: read
@@ -42,14 +45,14 @@ jobs:
       with:
         image: ${{ steps.build-image.outputs.image }}
         tags: ${{ steps.build-image.outputs.tags }}
-        registry: docker.io/giratot
+        registry: $DOCKER_REPO
         username: ${{ secrets.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - name: Generate artifact attestation
       uses: actions/attest-build-provenance@v1
       with:
-        subject-name: ${{ steps.build-image.outputs.image }}
+        subject-name: $DOCKER_REPO/${{ steps.build-image.outputs.image }}
         subject-digest: ${{ steps.push-to-docker.outputs.digest }}
         push-to-registry: true
 
@@ -59,7 +62,7 @@ jobs:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@0.19.0
       with:
-        image-ref: 'docker.io/giratot/languagetool:dev'
+        image-ref: '$DOCKER_REPO/${{ steps.build-image.outputs.image }}:dev'
         format: 'sarif'
         output: 'trivy-results.sarif'
       env:
